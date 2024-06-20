@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.escola.models import Aluno, Curso, Matricula
+from escola.models import Aluno, Curso, Matricula
 
 class AlunoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,12 +21,17 @@ class ListaMatriculasAlunoSerializer(serializers.ModelSerializer):
     periodo = serializers.SerializerMethodField()
     class Meta:
         model = Matricula
-        fields = ['aluno', 'curso', 'periodo']
+        fields = ['curso', 'periodo']
     def get_periodo(self, obj):
         return obj.get_periodo_display()
-    
-class ListaAlunosMatriculasSerializer(serializers.ModelSerializer):
+
+class ListaAlunosMatriculadosSerializer(serializers.ModelSerializer):
     aluno_nome = serializers.ReadOnlyField(source='aluno.nome')
     class Meta:
         model = Matricula
         fields = ['aluno_nome']
+
+class AlunoSerializerV2(serializers.ModelSerializer):
+    class Meta:
+        model = Aluno
+        fields = ['id', 'nome', 'rg', 'cpf', 'celular', 'data_nascimento']
